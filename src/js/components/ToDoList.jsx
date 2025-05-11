@@ -5,7 +5,7 @@ const ToDoList = () => {
   const [input, setInput] = useState('');
 
 
-  // Crear usuario si no existe
+  // Crear usuario 
   const crearUsuario = () => {
     fetch('https://playground.4geeks.com/todo/users/juancho', {
       method: 'POST',
@@ -20,9 +20,9 @@ const ToDoList = () => {
     .catch(err => console.error("Error creando usuario:", err));
   };
 
-  // Obtener tareas del backend
+  // Obtener tareas 
   const obtenerTareas = () => {
-    fetch(API_URL)
+    fetch('https://playground.4geeks.com/todo/users/juancho')
       .then(res => res.json())
       .then(data => {
         const lista = data.todos.map(item => item.label);
@@ -31,7 +31,7 @@ const ToDoList = () => {
       .catch(err => console.error("Error obteniendo tareas:", err));
   };
 
-  // Actualizar tareas en el backend
+  // Actualizar tareas 
   const actualizarBackend = (nuevasTareas) => {
     const tareasFormateadas = nuevasTareas.map(text => ({ label: text, done: false }));
 
