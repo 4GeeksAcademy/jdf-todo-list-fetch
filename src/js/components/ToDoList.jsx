@@ -5,7 +5,7 @@ const ToDoList = () => {
   const [input, setInput] = useState('');
 
 
-  // Crear usuario 
+   
   const crearUsuario = () => {
     fetch('https://playground.4geeks.com/todo/users/juancho', {
       method: 'POST',
@@ -20,7 +20,9 @@ const ToDoList = () => {
     .catch(err => console.error("Error creando usuario:", err));
   };
 
-  // Obtener tareas 
+
+
+
   const obtenerTareas = () => {
     fetch('https://playground.4geeks.com/todo/users/juancho')
       .then(res => res.json())
@@ -31,7 +33,9 @@ const ToDoList = () => {
       .catch(err => console.error("Error obteniendo tareas:", err));
   };
 
-  // Actualizar tareas 
+
+
+
   const actualizarBackend = (nuevasTareas) => {
     const tareasFormateadas = nuevasTareas.map(text => ({ label: text, done: false }));
 
@@ -44,7 +48,10 @@ const ToDoList = () => {
     .catch(err => console.error("Error actualizando tareas:", err));
   };
 
-  // Eliminar todas las tareas
+
+
+
+
   const eliminarTareas = () => {
     fetch('https://playground.4geeks.com/todo/users/juancho', {
       method: 'DELETE'
@@ -56,7 +63,9 @@ const ToDoList = () => {
     .catch(err => console.error("Error eliminando tareas:", err));
   };
 
-  // Se ejecuta una vez al montar el componente
+
+
+
   useEffect(() => {
     crearUsuario();
   }, []);
