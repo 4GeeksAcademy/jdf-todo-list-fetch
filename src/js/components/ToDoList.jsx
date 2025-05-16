@@ -44,7 +44,7 @@ const ToDoList = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(tareasFormateadas)
     })
-    .then(() => obtenerTareas())
+    
     .catch(err => console.error("Error actualizando tareas:", err));
   };
 

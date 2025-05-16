@@ -1,7 +1,7 @@
 import React from "react";
 
 
-import ToDoList from "./src/js/components/ToDoList.jsx"
+import ToDoList from "./ToDoList.jsx"
 
 
 //create your first component
