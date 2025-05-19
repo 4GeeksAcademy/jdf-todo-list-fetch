@@ -4,8 +4,6 @@ const ToDoList = () => {
   const [tareas, setTareas] = useState([]);
   const [input, setInput] = useState('');
 
-
-   
   const crearUsuario = () => {
     fetch('https://playground.4geeks.com/todo/users/juancho', {
       method: 'POST',
@@ -13,19 +11,26 @@ const ToDoList = () => {
       body: JSON.stringify([])
     })
     .then(res => {
-      if (!res.ok) console.log("El usuario ya existe");
-      return res.json();
+      if (res.status === 400) {
+        console.log("El usuario ya existe");
+        return obtenerTareas();
+      }
+      if (!res.ok) {
+        throw new Error("No se pudo crear el usuario");
+      }
+      return res.json().then(() => obtenerTareas());
     })
-    .then(() => obtenerTareas())
     .catch(err => console.error("Error creando usuario:", err));
   };
 
-
-
-
   const obtenerTareas = () => {
     fetch('https://playground.4geeks.com/todo/users/juancho')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("No se pudieron obtener las tareas");
+        }
+        return res.json();
+      })
       .then(data => {
         const lista = data.todos.map(item => item.label);
         setTareas(lista);
@@ -33,38 +38,32 @@ const ToDoList = () => {
       .catch(err => console.error("Error obteniendo tareas:", err));
   };
 
-
-
-
   const actualizarBackend = (nuevasTareas) => {
     const tareasFormateadas = nuevasTareas.map(text => ({ label: text, done: false }));
 
-    fetch('https://playground.4geeks.com/todo/todos/1', {
+    fetch('https://playground.4geeks.com/todo/users/juancho', {
       method: 'PUT',
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(tareasFormateadas)
+      body: JSON.stringify({ todos: tareasFormateadas })
     })
-    
+    .then(res => {
+      if (!res.ok) throw new Error("No se pudo actualizar el backend");
+      return res.json();
+    })
+    .then(data => console.log("Tareas actualizadas:", data))
     .catch(err => console.error("Error actualizando tareas:", err));
   };
 
-
-
-
-
   const eliminarTareas = () => {
-    fetch('https://playground.4geeks.com/todo/todos/1', {
+    fetch('https://playground.4geeks.com/todo/users/juancho', {
       method: 'DELETE'
     })
     .then(() => {
       setTareas([]);
-      return crearUsuario(); // Se recrea el usuario
+      crearUsuario();
     })
     .catch(err => console.error("Error eliminando tareas:", err));
   };
-
-
-
 
   useEffect(() => {
     crearUsuario();
@@ -102,15 +101,10 @@ const ToDoList = () => {
           <p style={styles.vacio}>No hay tareas, añadir tareas</p>
         ) : (
           tareas.map((tarea, index) => (
-            <div
-              key={index}
-              style={styles.tarea}
-              className="tarea"
-            >
+            <div key={index} style={styles.tarea} className="tarea">
               <span>{tarea}</span>
               <button
                 style={styles.botonEliminar}
-                className="boton-eliminar"
                 onClick={() => eliminarTarea(index)}
               >
                 ❌
