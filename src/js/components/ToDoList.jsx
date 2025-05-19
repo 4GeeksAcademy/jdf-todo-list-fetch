@@ -39,7 +39,7 @@ const ToDoList = () => {
   const actualizarBackend = (nuevasTareas) => {
     const tareasFormateadas = nuevasTareas.map(text => ({ label: text, done: false }));
 
-    fetch('https://playground.4geeks.com/todo/users/juancho', {
+    fetch('https://playground.4geeks.com/todo/todos/1', {
       method: 'PUT',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(tareasFormateadas)
@@ -53,7 +53,7 @@ const ToDoList = () => {
 
 
   const eliminarTareas = () => {
-    fetch('https://playground.4geeks.com/todo/users/juancho', {
+    fetch('https://playground.4geeks.com/todo/todos/1', {
       method: 'DELETE'
     })
     .then(() => {
