@@ -38,22 +38,7 @@ const ToDoList = () => {
       .catch(err => console.error("Error obteniendo tareas:", err));
   };
 
-  const actualizarBackend = (nuevasTareas) => {
-    const tareasFormateadas = nuevasTareas.map(text => ({ label: text, done: false }));
-
-    fetch('https://playground.4geeks.com/todo/users/juancho', {
-      method: 'PUT',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ todos: tareasFormateadas })
-    })
-    .then(res => {
-      if (!res.ok) throw new Error("No se pudo actualizar el backend");
-      return res.json();
-    })
-    .then(data => console.log("Tareas actualizadas:", data))
-    .catch(err => console.error("Error actualizando tareas:", err));
-  };
-
+ 
   const eliminarTareas = () => {
     fetch('https://playground.4geeks.com/todo/users/juancho', {
       method: 'DELETE'
