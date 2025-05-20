@@ -38,7 +38,31 @@ const ToDoList = () => {
       .catch(err => console.error("Error obteniendo tareas:", err));
   };
 
- 
+  const actualizarTareas = (tarea) => {
+    fetch('https://playground.4geeks.com/todo/todos/juancho', {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ label: tarea, done: false })
+    })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error("Error al agregar tarea");
+      }
+      return obtenerTareas();
+    })
+    .catch(err => console.error("Error en POST:", err));
+  };
+
+  const eliminarTarea = (indexAEliminar) => {
+    const tareaAEliminar = tareas[indexAEliminar];
+
+    fetch(`https://playground.4geeks.com/todo/todos/juancho/${indexAEliminar}`, {
+      method: 'DELETE'
+    })
+    .then(() => obtenerTareas())
+    .catch(err => console.error("Error eliminando tarea:", err));
+  };
+
   const eliminarTareas = () => {
     fetch('https://playground.4geeks.com/todo/users/juancho', {
       method: 'DELETE'
@@ -50,24 +74,16 @@ const ToDoList = () => {
     .catch(err => console.error("Error eliminando tareas:", err));
   };
 
-  useEffect(() => {
-    crearUsuario();
-  }, []);
-
   const agregarTarea = (e) => {
     if (e.key === 'Enter' && input.trim() !== '') {
-      const nuevas = [...tareas, input.trim()];
-      setTareas(nuevas);
+      actualizarTareas(input.trim());
       setInput('');
-      actualizarBackend(nuevas);
     }
   };
 
-  const eliminarTarea = (indexAEliminar) => {
-    const nuevasTareas = tareas.filter((_, index) => index !== indexAEliminar);
-    setTareas(nuevasTareas);
-    actualizarBackend(nuevasTareas);
-  };
+  useEffect(() => {
+    crearUsuario();
+  }, []);
 
   return (
     <div style={styles.container}>
